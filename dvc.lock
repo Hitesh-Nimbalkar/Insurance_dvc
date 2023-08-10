@@ -1,0 +1,31 @@
+schema: '2.0'
+stages:
+  data_ingestion_stage:
+    cmd: python Insurance/pipeline/training_pipeline/01_data_ingestion.py
+    deps:
+    - path: Insurance/components/data_ingestion.py
+      hash: md5
+      md5: 404074ef24561194fb1892bed0d8dec3
+      size: 4140
+    - path: Insurance/entity/artifact_entity.py
+      hash: md5
+      md5: ddfdb8d44f2c7a10d750830e1829dc04
+      size: 739
+    - path: Insurance/entity/config_entity.py
+      hash: md5
+      md5: 125f58cffa81a830e859b6fe19e4a1de
+      size: 5682
+    - path: Insurance/pipeline/training_pipeline/01_data_ingestion.py
+      hash: md5
+      md5: 31b028bf414393fb68fd78324b47f76b
+      size: 1236
+    - path: config/config.yaml
+      hash: md5
+      md5: dbe425168acdcc0ec537f9d089bc90e3
+      size: 1042
+    outs:
+    - path: artifact/data_ingestion/
+      hash: md5
+      md5: 5b662911236b7d0416e104073bb0f4f5.dir
+      size: 334256
+      nfiles: 4

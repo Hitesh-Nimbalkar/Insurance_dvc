@@ -1,0 +1,13 @@
+stages:
+  data_ingestion_stage:
+    cmd: python Insurance/pipeline/training_pipeline/01_data_ingestion.py
+    deps:
+      - Insurance/entity/config_entity.py
+      - Insurance/entity/artifact_entity.py
+      - Insurance/components/data_ingestion.py
+      - config/config.yaml
+      - Insurance/pipeline/training_pipeline/01_data_ingestion.py
+    outs:
+      - artifact/data_ingestion/
+
+

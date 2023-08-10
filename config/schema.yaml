@@ -1,0 +1,21 @@
+ColumnNames:
+  age: int64
+  bmi: float64
+  children: int64
+  expenses: float64
+  region: object
+  sex: object
+  smoker: object
+FileName: insurance.csv
+NumberOfColumns: 7
+
+numerical_columns:
+- age
+- bmi 
+- children 
+
+categorical_columns:
+- sex
+- smoker
+- region
+
