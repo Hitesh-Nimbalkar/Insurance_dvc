@@ -83,6 +83,17 @@ class DataTransformationConfig:
         self.preprocessed_dir = os.path.join(self.data_transformation_dir,data_transformation_key[DATA_TRANSFORMATION_PREPROCESSING_DIR_KEY])
         self.preprocessed_object = os.path.join(self.preprocessed_dir,data_transformation_key[DATA_TRANSFORMATION_PREPROCESSING_FILE_NAME_KEY])
         
+        
+
+class Hyperparamter_optimize:
+    def __init__(self,training_pipeline_config:TrainingPipelineConfig):
+        
+        self.param_data=config_data[PARAMTERS_OPTIMIZATION_KEY]
+        self.parameter_directory=os.path.join(training_pipeline_config.artifact_dir,self.param_data[PARAMTERS_OPTIMIZATION_DIR])
+        self.param_file_path=os.path.join(self.parameter_directory,self.param_data[PARAMTERS_OPTIMIZATION_FILE_NAME])
+        
+        
+
 class ModelTrainingConfig:
     
     def __init__(self,training_pipeline_config:TrainingPipelineConfig):

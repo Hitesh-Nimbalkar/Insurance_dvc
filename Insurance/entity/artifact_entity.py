@@ -18,6 +18,9 @@ class DataTransformationArtifact:
     target_train:str
     target_test:str
     
+@dataclass
+class OptimisationArtifact:
+    param_yaml_file_path:str
     
 @dataclass
 class ModelTrainerArtifact:

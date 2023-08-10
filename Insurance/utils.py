@@ -114,3 +114,22 @@ def load_numpy_array_data(file_path: str) -> np.array:
             return np.load(file_obj, allow_pickle=True)
     except Exception as e:
         raise InsuranceException(e, sys) from e
+    
+    
+
+def add_dict_to_yaml(file_path, new_data):
+    try:
+        # Load the existing YAML data
+        with open(file_path, 'r') as file:
+            existing_data = yaml.safe_load(file)
+
+        # Merge the existing data with the new dictionary data
+        existing_data.update(new_data)
+
+        # Write the updated data back to the file
+        with open(file_path, 'w') as file:
+            yaml.dump(existing_data, file, default_flow_style=False)
+
+        print("Data added successfully.")
+    except Exception as e:
+        print("An error occurred:", e)

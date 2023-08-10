@@ -2,9 +2,9 @@ import os,sys
 from six.moves import urllib  
 from Insurance.constant import *
 from Insurance.config import *
-from Insurance.entity.config_entity import DataIngestionConfig
 from Insurance.entity.artifact_entity import DataIngestionArtifact
-from Insurance.utils import get_collection_as_dataframe
+from Insurance.entity.config_entity import DataIngestionConfig
+from Insurance.utils import get_collection_as_dataframe,write_yaml_file
 from Insurance.logger import logging
 from Insurance.exception import InsuranceException
 import pandas as pd
@@ -101,10 +101,25 @@ class DataIngestion:
         train_data.to_csv(train_file_path, index=False)
         test_data.to_csv(test_file_path, index=False)
         
-        data_ingestion_artifact=DataIngestionArtifact(train_file_path=train_file_path,test_file_path=test_file_path)
         
-        return data_ingestion_artifact
 
+
+
+        abs_train_file_path = os.path.abspath(train_file_path)
+        abs_test_file_path = os.path.abspath(test_file_path)
+
+     
+        
+        data_ingestion_artifact={ 'data_ingestion_artifact':{ 
+                                 'train_file_path' : abs_train_file_path ,
+                                  'test_file_path' : abs_test_file_path}}
+        
+        logging.info(f" Data Validation artifact : {data_ingestion_artifact}")
+        
+        write_yaml_file(file_path=ARTIFACT_ENTITY_YAML_FILE_PATH,data=data_ingestion_artifact)
+       
+        
+       
 
 
 

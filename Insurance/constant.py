@@ -54,6 +54,13 @@ DATA_TRANSFORMATION_PREPROCESSING_FILE_NAME_KEY = "preprocessed_object_file_name
 
 PIKLE_FOLDER_NAME_KEY = "prediction_files"
 
+# Paramter Optimisation 
+PARAMTERS_OPTIMIZATION_KEY ='parameter_optimize'
+PARAMTERS_OPTIMIZATION_DIR='HOP_directory'
+PARAMTERS_OPTIMIZATION_FILE_NAME='params_file'
+
+
+
 # Model Training 
 MODEL_TRAINING_CONFIG_KEY='model_trainer_config'
 MODEL_TRAINER_ARTIFACT_DIR = "model_training"
@@ -71,3 +78,9 @@ SAVED_MODEL_CONFIG_KEY='saved_model_config'
 SAVED_MODEL_DIR='directory'
 SAVED_MODEL_OBJECT='model_object'
 SAVED_MODEL_REPORT='report'
+
+
+
+
+## Artifact Entity 
+ARTIFACT_ENTITY_YAML_FILE_PATH=r'Insurance\entity\artifact_entity.yaml'

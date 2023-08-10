@@ -89,14 +89,23 @@ class DataTransformation:
              obj=transformation_pipleine)
 
 
-            data_transformation_artifact = artifact_entity.DataTransformationArtifact(
-                transform_object_path=self.data_transformation_config.preprocessed_object,
-                transformed_train_path = self.data_transformation_config.transformed_train_path,
-                transformed_test_path = self.data_transformation_config.transformed_test_path,
-                target_train=self.data_transformation_config.target_train_file_path,
-                target_test=self.data_transformation_config.target_test_file_path
-            )
+            # Log the export of the validated train dataset
+            logging.info(f"Exported Trasformed data")
+            
+            data_transformation_artifact = {
+                'data_transformation_artifact': {
+                    'transform_object_path': self.data_transformation_config.preprocessed_object,
+                    'transformed_train_path': self.data_transformation_config.transformed_train_path,
+                    'transformed_test_path': self.data_transformation_config.transformed_test_path,
+                    'target_train': self.data_transformation_config.target_train_file_path,
+                    'target_test': self.data_transformation_config.target_test_file_path
+                }
+            }
 
-            return data_transformation_artifact
+            utils.add_dict_to_yaml(file_path=ARTIFACT_ENTITY_YAML_FILE_PATH,new_data=data_transformation_artifact)
+
+            
+                            
+            
         except Exception as e:
             raise InsuranceException(e, sys)

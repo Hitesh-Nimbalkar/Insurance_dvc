@@ -58,11 +58,14 @@ class ModelEvaluation:
                 model_trained_report_data = read_yaml_file(file_path=model_trained_report)
                 
                 artifact_model_r2_score =float( model_trained_report_data['R2_score'])
+                artifact_model_params=model_trained_report_data['Parameters']
                 model_name = model_trained_report_data['Model_name']
+                
                 R2_score = artifact_model_r2_score
                 # Artifact ----> Model, Model Report 
                 model_path = model_trained_artifact_path
                 model_report_path = model_trained_report
+                model_params=artifact_model_params
                 
                 
                 comment='Trained model Saved '
@@ -85,12 +88,15 @@ class ModelEvaluation:
                     
                     model_report_path = model_trained_report
                     model_name = model_trained_report_data['Model_name']
+                    artifact_model_params=model_trained_report_data['Parameters']
                     R2_score = float( model_trained_report_data['R2_score'])
                     
                     comment='Trained Model is better than Saved model'
+                    model_params=artifact_model_params
                     
                     logging.info(f"Model Selected : {model_name}")
                     logging.info(f"R2_score : {R2_score}")
+                    logging.info(f" Parameters : {model_params}")
                   
                 elif artifact_model_R2_score < saved_model_r2_score:
                     logging.info("Saved model outperforms the trained model!")
@@ -98,10 +104,13 @@ class ModelEvaluation:
                     comment='Saved Model is better than Currently trained model'
                     model_report_path = saved_model_report_path
                     model_name = saved_model_report_data['Model_name']
+                    model_params=saved_model_report_data['Parameters']
                     R2_score = float( saved_model_report_data['R2_score'])
                     logging.info(f"Model Selected : {model_name}")
 
                     logging.info(f"R2_score : {R2_score}")
+                    
+                    logging.info(f" Parameters : {model_params}")
             
                 else:
                     logging.info("Both models have the same R2_score.")
@@ -110,26 +119,32 @@ class ModelEvaluation:
                     model_report_path = saved_model_report_path
                     model_name = saved_model_report_data['Model_name']
                     R2_score = float( saved_model_report_data['R2_score'])
+                    model_params=saved_model_report_data['Parameters']
                     logging.info(f"Model Selected : {model_name}")
 
                     logging.info(f"R2_score : {R2_score}")
                     
+                    logging.info(f" Parameters : {model_params}")
+                    
                     
             model_eval_report= {'Model_name':  model_name,
                                 'R2_score': R2_score,
+                                'Parameters':model_params,
                                 'Message': comment}
             
             write_yaml_file(file_path=self.model_evaluation_config.model_eval_report,data=model_eval_report)
             
+            
+            model_evaluation_artifact= {'model_evaluation_artifact': {'Model_name':  model_name,
+                                'R2_score': R2_score,
+                                'Parameters':model_params,
+                                'Message': comment}}
+            
+            add_dict_to_yaml(file_path=ARTIFACT_ENTITY_YAML_FILE_PATH,new_data=model_evaluation_artifact)
 
-            # Create a model evaluation artifact
-            model_evaluation = ModelEvaluationArtifact(model_name=model_name,R2_score=R2_score,
-                                                    selected_model_path=model_path, 
-                                                    model_report_path=model_report_path)
+            
 
-            logging.info("Model evaluation completed successfully!")
-
-            return model_evaluation
+            
         except Exception as e:
             logging.error("Error occurred during model evaluation!")
             raise InsuranceException(e, sys) from e

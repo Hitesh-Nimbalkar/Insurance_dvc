@@ -27,6 +27,10 @@ data_transformation_config:
   preprocessing_dir: preprocessed
   preprocessed_object_file_name: preprocessed.pkl
 
+parameter_optimize:
+  HOP_directory: param_op
+  params_file: params.yaml
+
 model_trainer_config:
   model_training: model_training 
   model_object: model.pkl

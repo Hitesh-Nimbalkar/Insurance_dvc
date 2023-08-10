@@ -11,3 +11,58 @@ stages:
       - artifact/data_ingestion/
 
 
+  data_validation_stage:
+    cmd: python Insurance/pipeline/training_pipeline/02_data_validation.py
+    deps:
+      - Insurance/entity/config_entity.py
+      - Insurance/entity/artifact_entity.py
+      - Insurance/entity/artifact_entity.yaml
+      - Insurance/components/data_validation.py
+      - config/config.yaml
+      - Insurance/pipeline/training_pipeline/02_data_validation.py
+      - artifact/data_ingestion/
+    outs:
+      - artifact/data_validation/
+
+  data_transformation_stage:
+    cmd: python Insurance/pipeline/training_pipeline/03_data_transformation.py
+    deps:
+      - Insurance/entity/config_entity.py
+      - Insurance/entity/artifact_entity.py
+      - Insurance/entity/artifact_entity.yaml
+      - Insurance/components/data_transformation.py
+      - config/config.yaml
+      - Insurance/pipeline/training_pipeline/03_data_transformation.py
+      - artifact/data_validation/
+    outs:
+      - artifact/data_transformation/
+
+  param_optimisation_stage:
+    cmd: python Insurance/pipeline/training_pipeline/04_param_optimisation.py
+    deps:
+      - Insurance/entity/config_entity.py
+      - Insurance/entity/artifact_entity.py
+      - Insurance/entity/artifact_entity.yaml
+      - Insurance/components/paramter_optimize.py
+      - config/config.yaml
+      - Insurance/pipeline/training_pipeline/04_param_optimisation.py
+      - artifact/data_transformation/
+    outs:
+      - artifact/param_op/
+
+  model_trainer_stage:
+    cmd: python Insurance/pipeline/training_pipeline/05_model_trainer.py
+    deps:
+      - Insurance/entity/config_entity.py
+      - Insurance/entity/artifact_entity.py
+      - Insurance/entity/artifact_entity.yaml
+      - Insurance/components/model_trainer.py
+      - config/config.yaml
+      - Insurance/pipeline/training_pipeline/05_model_trainer.py
+      - artifact/data_transformation/
+      - artifact/param_op/
+    outs:
+      - artifact/model_training/
+
+
+

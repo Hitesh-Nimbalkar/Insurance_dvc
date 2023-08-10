@@ -5,7 +5,7 @@ from Insurance.entity.config_entity import DataIngestionConfig,DataValidationCon
 from Insurance.entity.artifact_entity import DataIngestionArtifact,DataValidationArtifact
 from Insurance.exception import InsuranceException
 from Insurance.logger import logging
-from Insurance.utils import read_yaml_file
+from Insurance.utils import read_yaml_file,write_yaml_file,add_dict_to_yaml
 from Insurance.entity.raw_data_validation import IngestedDataValidation
 import shutil
 from Insurance.constant import *
@@ -26,16 +26,20 @@ class DataValidation:
             # Schema_file_path
             self.schema_path = self.data_validation_config.schema_file_path
             
+            self.train_path = self.data_ingestion_artifact.train_file_path
+            self.test_path = self.data_ingestion_artifact.test_file_path
+            
+            logging.info(f" Train Path : {self.train_path}")
+            logging.info(f"Test path : {self.test_path}")
+            
             
             # creating instance for row_data_validation
             self.train_data = IngestedDataValidation(
-                                validate_path=self.data_ingestion_artifact.train_file_path, schema_path=self.schema_path)
+                                validate_path=self.train_path, schema_path=self.schema_path)
             self.test_data = IngestedDataValidation(
-                                validate_path=self.data_ingestion_artifact.test_file_path, schema_path=self.schema_path)
+                                validate_path=self.test_path , schema_path=self.schema_path)
             
-            # Data_ingestion_artifact--->Unvalidated train and test file path
-            self.train_path = self.data_ingestion_artifact.train_file_path
-            self.test_path = self.data_ingestion_artifact.test_file_path
+
             
             # Data_validation_config --> file paths to save validated_data
             self.validated_train_path = self.data_validation_config.validated_train_path
@@ -144,6 +148,14 @@ class DataValidation:
                     
                     # Log the export of the validated train dataset
                     logging.info(f"Exported validated train dataset to file: [{self.validated_test_path}]")
+                    
+                    data_validation_artifact={ 'data_validation_artifact':{ 
+                                  'validated_test_path'  : self.validated_test_path ,
+                                  'validated_train_path' : self.validated_train_path}}
+        
+                    add_dict_to_yaml(file_path=ARTIFACT_ENTITY_YAML_FILE_PATH,new_data=data_validation_artifact)
+       
+                    
                                         
                     
                     return validation_status,self.validated_train_path,self.validated_test_path
