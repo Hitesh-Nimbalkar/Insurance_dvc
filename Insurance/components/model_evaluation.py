@@ -128,17 +128,16 @@ class ModelEvaluation:
                     
                     
             model_eval_report= {'Model_name':  model_name,
+                                'Model_path':model_path,
+                                'Report_path':model_report_path,
                                 'R2_score': R2_score,
                                 'Parameters':model_params,
                                 'Message': comment}
             
             write_yaml_file(file_path=self.model_evaluation_config.model_eval_report,data=model_eval_report)
             
-            
-            model_evaluation_artifact= {'model_evaluation_artifact': {'Model_name':  model_name,
-                                'R2_score': R2_score,
-                                'Parameters':model_params,
-                                'Message': comment}}
+            artifact_report_path=self.model_evaluation_config.model_eval_report
+            model_evaluation_artifact= {'model_evaluation_artifact': {'eval_report':artifact_report_path}}
             
             add_dict_to_yaml(file_path=ARTIFACT_ENTITY_YAML_FILE_PATH,new_data=model_evaluation_artifact)
 

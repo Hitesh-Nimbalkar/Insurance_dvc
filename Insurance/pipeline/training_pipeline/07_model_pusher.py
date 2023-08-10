@@ -32,23 +32,23 @@ class Pipeline():
         except Exception as e:
             raise InsuranceException(e, sys) from e
 
-    def start_model_evaluation(self):
-        try:
-            artifact=read_yaml_file(ARTIFACT_ENTITY_YAML_FILE_PATH)
-            model_trainer_artifact=artifact['model_trainer_artifact']
-            model_object=model_trainer_artifact['model_file_path']
-            report_path=model_trainer_artifact['Report_path']
+    def start_model_pusher(self):
+            try:
+                artifact=read_yaml_file(ARTIFACT_ENTITY_YAML_FILE_PATH)
+                model_evaluation_artifact=artifact['model_evaluation_artifact']
+                model_eval_path=model_evaluation_artifact['eval_report']
+
+                
+                
+                
+                
+                
+                model_pusher = ModelPusher(model_eval_artifact=ModelEvaluationArtifact(model_eval_report_path=model_eval_path
+                                                                                       ))
+                model_pusher_artifact = model_pusher.initiate_model_pusher()
+                return model_pusher_artifact
+            except  Exception as e:
+                raise  InsuranceException(e,sys)
             
-            
-            model_eval = ModelEvaluation(
-                model_trainer_artifact=ModelTrainerArtifact(model_object_file_path=model_object,model_report_file_path=report_path),
-                model_evaluation_config=ModelEvalConfig(training_pipeline_config=self.training_pipeline_config))
-                                         
-            model_eval.initiate_model_evaluation()
-         
-        except  Exception as e:
-            raise  InsuranceException(e,sys)
-        
-        
 pipeline=Pipeline()
-pipeline.start_model_evaluation()
+pipeline.start_model_pusher()

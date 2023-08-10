@@ -29,10 +29,7 @@ class ModelTrainerArtifact:
 
 @dataclass
 class ModelEvaluationArtifact:
-    model_name:str
-    R2_score:float
-    selected_model_path:str
-    model_report_path:str
+    model_eval_report_path:str
 
 
 @dataclass

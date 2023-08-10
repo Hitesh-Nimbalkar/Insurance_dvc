@@ -10,13 +10,10 @@ stages:
     outs:
       - artifact/data_ingestion/
 
-
   data_validation_stage:
     cmd: python Insurance/pipeline/training_pipeline/02_data_validation.py
     deps:
       - Insurance/entity/config_entity.py
-      - Insurance/entity/artifact_entity.py
-      - Insurance/entity/artifact_entity.yaml
       - Insurance/components/data_validation.py
       - config/config.yaml
       - Insurance/pipeline/training_pipeline/02_data_validation.py
@@ -27,9 +24,6 @@ stages:
   data_transformation_stage:
     cmd: python Insurance/pipeline/training_pipeline/03_data_transformation.py
     deps:
-      - Insurance/entity/config_entity.py
-      - Insurance/entity/artifact_entity.py
-      - Insurance/entity/artifact_entity.yaml
       - Insurance/components/data_transformation.py
       - config/config.yaml
       - Insurance/pipeline/training_pipeline/03_data_transformation.py
@@ -40,9 +34,6 @@ stages:
   param_optimisation_stage:
     cmd: python Insurance/pipeline/training_pipeline/04_param_optimisation.py
     deps:
-      - Insurance/entity/config_entity.py
-      - Insurance/entity/artifact_entity.py
-      - Insurance/entity/artifact_entity.yaml
       - Insurance/components/paramter_optimize.py
       - config/config.yaml
       - Insurance/pipeline/training_pipeline/04_param_optimisation.py
@@ -53,9 +44,6 @@ stages:
   model_trainer_stage:
     cmd: python Insurance/pipeline/training_pipeline/05_model_trainer.py
     deps:
-      - Insurance/entity/config_entity.py
-      - Insurance/entity/artifact_entity.py
-      - Insurance/entity/artifact_entity.yaml
       - Insurance/components/model_trainer.py
       - config/config.yaml
       - Insurance/pipeline/training_pipeline/05_model_trainer.py
@@ -64,5 +52,21 @@ stages:
     outs:
       - artifact/model_training/
 
+  model_evaluation_stage:
+    cmd: python Insurance/pipeline/training_pipeline/06_model_evaluation.py
+    deps:
+      - Insurance/components/model_evaluation.py
+      - config/config.yaml
+      - Insurance/pipeline/training_pipeline/06_model_evaluation.py
+      - artifact/model_training/
+    outs:
+      - artifact/model_evaluation/
 
-
+  model_pusher_stage:
+    cmd: python Insurance/pipeline/training_pipeline/07_model_pusher.py
+    deps:
+      - Insurance/components/model_pusher.py
+      - config/config.yaml
+      - Insurance/pipeline/training_pipeline/07_model_pusher.py
+      - artifact/model_training/
+      - artifact/model_evaluation/
