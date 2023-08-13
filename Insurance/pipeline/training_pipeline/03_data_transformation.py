@@ -22,19 +22,12 @@ from collections import namedtuple
 
 
 
-class Pipeline():
+class data_transfromation():
 
     def __init__(self,training_pipeline_config=TrainingPipelineConfig()) -> None:
         try:
             
             self.training_pipeline_config=training_pipeline_config
-
-        except Exception as e:
-            raise InsuranceException(e, sys) from e
-        
-       
-    def start_data_transformation(self) -> DataTransformationArtifact:
-        try:
             artifact=read_yaml_file(ARTIFACT_ENTITY_YAML_FILE_PATH)
             data_validation_artifact=artifact['data_validation_artifact']
             train_path=data_validation_artifact['validated_train_path']
@@ -46,11 +39,11 @@ class Pipeline():
                 data_validation_artifact = DataValidationArtifact(validated_test_path=test_path,
                                                                   validated_train_path=train_path))
 
-            return data_transformation.initiate_data_transformation()
+            data_transformation.initiate_data_transformation()
+
         except Exception as e:
-            raise InsuranceException(e,sys) from e
+            raise InsuranceException(e, sys) from e
+        
         
 if __name__ == '__main__':
-    pipeline=Pipeline()
-    pipeline.start_data_transformation()
-        
+    data_transfromation()

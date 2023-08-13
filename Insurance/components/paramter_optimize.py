@@ -136,6 +136,7 @@ class param_optimsation:
             info_dict = {
                 "Model_name": best_model,
                 "Parameters": best_model_params,
+
             }
             
             param_dir=self.paramter_optimise_config.parameter_directory

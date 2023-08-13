@@ -1,5 +1,5 @@
 Model_name: Gradient Boosting Regression
 Parameters:
-  learning_rate: 0.5
+  learning_rate: 0.1
   max_depth: 7
-  n_estimators: 200
+  n_estimators: 150

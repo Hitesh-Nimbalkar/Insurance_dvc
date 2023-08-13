@@ -22,7 +22,7 @@ from collections import namedtuple
 
 
 
-class Pipeline():
+class param_optimisation():
 
     def __init__(self,training_pipeline_config=TrainingPipelineConfig()) -> None:
         try:
@@ -30,13 +30,6 @@ class Pipeline():
             self.training_pipeline_config=training_pipeline_config
             
             
-            
-            
-        except Exception as e:
-            raise InsuranceException(e, sys) from e
-
-    def param_optimisation(self) -> ModelTrainerArtifact:
-        try:
             artifact=read_yaml_file(ARTIFACT_ENTITY_YAML_FILE_PATH)
             data_transformation_artifact=artifact['data_transformation_artifact']
             target_test=data_transformation_artifact['target_test']
@@ -54,12 +47,12 @@ class Pipeline():
                                                                                                 target_train=target_train,
                                                                                                 transformed_test_path=transformed_test_path))   
 
-            return optimise.start_param_optimisation()
+            optimise.start_param_optimisation()
         except Exception as e:
             raise InsuranceException(e,sys) from e  
         
         
-pipeline=Pipeline()
-pipeline.param_optimisation()
         
+if __name__ == '__main__':
+    param_optimisation()
         

@@ -19,21 +19,13 @@ from collections import namedtuple
 
 
 
-class Pipeline():
+class model_trainer():
 
     def __init__(self,training_pipeline_config=TrainingPipelineConfig()) -> None:
         try:
             
             self.training_pipeline_config=training_pipeline_config
-            
-            
-            
-            
-        except Exception as e:
-            raise InsuranceException(e, sys) from e
 
-    def model_trainer(self) -> ModelTrainerArtifact:
-        try:
             artifact=read_yaml_file(ARTIFACT_ENTITY_YAML_FILE_PATH)
             data_transformation_artifact=artifact['data_transformation_artifact']
             target_test=data_transformation_artifact['target_test']
@@ -59,7 +51,6 @@ class Pipeline():
         except Exception as e:
             raise InsuranceException(e,sys) from e  
         
-        
-pipeline=Pipeline()
-pipeline.model_trainer()
+if __name__ == '__main__':
+    model_trainer()
         

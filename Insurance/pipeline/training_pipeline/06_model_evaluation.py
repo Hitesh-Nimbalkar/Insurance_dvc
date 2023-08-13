@@ -22,18 +22,13 @@ from collections import namedtuple
 
 
 
-class Pipeline():
+class model_evaluation():
 
     def __init__(self,training_pipeline_config=TrainingPipelineConfig()) -> None:
         try:
             
             self.training_pipeline_config=training_pipeline_config
             
-        except Exception as e:
-            raise InsuranceException(e, sys) from e
-
-    def start_model_evaluation(self):
-        try:
             artifact=read_yaml_file(ARTIFACT_ENTITY_YAML_FILE_PATH)
             model_trainer_artifact=artifact['model_trainer_artifact']
             model_object=model_trainer_artifact['model_file_path']
@@ -50,5 +45,7 @@ class Pipeline():
             raise  InsuranceException(e,sys)
         
         
-pipeline=Pipeline()
-pipeline.start_model_evaluation()
+
+        
+if __name__ == '__main__':
+    model_evaluation()

@@ -21,19 +21,12 @@ from collections import namedtuple
 
 
 
-class Pipeline():
+class data_validation():
 
     def __init__(self,training_pipeline_config=TrainingPipelineConfig()) -> None:
         try:
             self.training_pipeline_config=training_pipeline_config
-        except Exception as e:
-            raise InsuranceException(e, sys) from e
-        
-     
-    def start_data_validation(self)-> DataValidationArtifact:
-        try:
-                        
-           
+                       
             artifact=read_yaml_file(ARTIFACT_ENTITY_YAML_FILE_PATH)
             data_ingestion_artifact=artifact['data_ingestion_artifact']
             train_path=data_ingestion_artifact['train_file_path']
@@ -42,11 +35,12 @@ class Pipeline():
             data_validation = DataValidation(data_validation_config=DataValidationConfig(self.training_pipeline_config),
                                              data_ingestion_artifact=DataIngestionArtifact(train_file_path=train_path,
                                                                                            test_file_path=test_path))
-            return data_validation.initiate_data_validation()
+            data_validation.initiate_data_validation()
         except Exception as e:
             raise InsuranceException(e, sys) from e
+        
+     
 
 if __name__ == '__main__':
-    pipeline=Pipeline()
-    pipeline.start_data_validation()
+    data_validation()
         
