@@ -1,0 +1,15 @@
+artifact_uri: file:///E:/Projects/Insurance_DB_DVC_New/mlruns/653764377245179000/23230448a4f548459144e39188c8c4be/artifacts
+end_time: 1691903339768
+entry_point_name: ''
+experiment_id: '653764377245179000'
+lifecycle_stage: active
+run_id: 23230448a4f548459144e39188c8c4be
+run_name: ambitious-moose-978
+run_uuid: 23230448a4f548459144e39188c8c4be
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1691903339756
+status: 3
+tags: []
+user_id: Hitesh

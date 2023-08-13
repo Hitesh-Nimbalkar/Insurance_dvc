@@ -52,6 +52,7 @@ stages:
       - Parameters.learning_rate
       - Parameters.max_depth
       - Parameters.n_estimators
+      - Experiment
     outs:
       - artifact/model_training/
 

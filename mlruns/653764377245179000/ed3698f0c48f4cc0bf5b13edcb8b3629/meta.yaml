@@ -1,0 +1,15 @@
+artifact_uri: file:///E:/Projects/Insurance_DB_DVC_New/mlruns/653764377245179000/ed3698f0c48f4cc0bf5b13edcb8b3629/artifacts
+end_time: 1691903339738
+entry_point_name: ''
+experiment_id: '653764377245179000'
+lifecycle_stage: active
+run_id: ed3698f0c48f4cc0bf5b13edcb8b3629
+run_name: resilient-dove-281
+run_uuid: ed3698f0c48f4cc0bf5b13edcb8b3629
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1691903339728
+status: 3
+tags: []
+user_id: Hitesh

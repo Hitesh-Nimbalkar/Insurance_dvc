@@ -21,8 +21,8 @@ stages:
       size: 977
     - path: config/config.yaml
       hash: md5
-      md5: 231033e848fbcc9dd908d04347b34ccf
-      size: 1120
+      md5: e2dc5b8826787095a09d3355112e0fac
+      size: 1122
     outs:
     - path: artifact/data_ingestion/
       hash: md5
@@ -51,8 +51,8 @@ stages:
       nfiles: 4
     - path: config/config.yaml
       hash: md5
-      md5: 231033e848fbcc9dd908d04347b34ccf
-      size: 1120
+      md5: e2dc5b8826787095a09d3355112e0fac
+      size: 1122
     outs:
     - path: artifact/data_validation/
       hash: md5
@@ -77,8 +77,8 @@ stages:
       nfiles: 2
     - path: config/config.yaml
       hash: md5
-      md5: 231033e848fbcc9dd908d04347b34ccf
-      size: 1120
+      md5: e2dc5b8826787095a09d3355112e0fac
+      size: 1122
     outs:
     - path: artifact/data_transformation/
       hash: md5
@@ -90,8 +90,8 @@ stages:
     deps:
     - path: Insurance/components/paramter_optimize.py
       hash: md5
-      md5: d8778deb9d4ab2639d07bfa5c913c858
-      size: 6496
+      md5: 91a77291850610a5418695d382a2fb47
+      size: 6620
     - path: Insurance/pipeline/training_pipeline/04_param_optimisation.py
       hash: md5
       md5: 83e39f35a6bd6227989117567c74a9ca
@@ -103,21 +103,21 @@ stages:
       nfiles: 5
     - path: config/config.yaml
       hash: md5
-      md5: 231033e848fbcc9dd908d04347b34ccf
-      size: 1120
+      md5: e2dc5b8826787095a09d3355112e0fac
+      size: 1122
     outs:
     - path: artifact/param_op/
       hash: md5
-      md5: 3abfa10398f3e82c61a4b3303d1fde5c.dir
-      size: 114
+      md5: c749c08f820cb1366c3433f455776e02.dir
+      size: 141
       nfiles: 1
   model_trainer_stage:
     cmd: python Insurance/pipeline/training_pipeline/05_model_trainer.py
     deps:
     - path: Insurance/components/model_trainer.py
       hash: md5
-      md5: 156644ac7edf0905e41d0c6a03d5c3d4
-      size: 5568
+      md5: c2b5508855c8bfc2676bc22aa6612194
+      size: 5651
     - path: Insurance/pipeline/training_pipeline/05_model_trainer.py
       hash: md5
       md5: c6c61de92af1d91fbd14ab4505ee4f63
@@ -129,18 +129,19 @@ stages:
       nfiles: 5
     - path: config/config.yaml
       hash: md5
-      md5: 231033e848fbcc9dd908d04347b34ccf
-      size: 1120
+      md5: e2dc5b8826787095a09d3355112e0fac
+      size: 1122
     params:
       params.yaml:
+        Experiment: Experiment_01
         Parameters.learning_rate: 0.1
         Parameters.max_depth: 7
-        Parameters.n_estimators: 150
+        Parameters.n_estimators: 200
     outs:
     - path: artifact/model_training/
       hash: md5
-      md5: 08c8d5169cff895ec64218059f392751.dir
-      size: 1939373
+      md5: 85b1940355c7fbcf1d4d9ec798fc3522.dir
+      size: 2521998
       nfiles: 2
   model_evaluation_stage:
     cmd: python Insurance/pipeline/training_pipeline/06_model_evaluation.py
@@ -155,13 +156,13 @@ stages:
       size: 1829
     - path: artifact/model_training/
       hash: md5
-      md5: 08c8d5169cff895ec64218059f392751.dir
-      size: 1939373
+      md5: 85b1940355c7fbcf1d4d9ec798fc3522.dir
+      size: 2521998
       nfiles: 2
     - path: config/config.yaml
       hash: md5
-      md5: 231033e848fbcc9dd908d04347b34ccf
-      size: 1120
+      md5: e2dc5b8826787095a09d3355112e0fac
+      size: 1122
     outs:
     - path: artifact/model_evaluation/
       hash: md5
@@ -173,8 +174,8 @@ stages:
     deps:
     - path: Insurance/components/model_pusher.py
       hash: md5
-      md5: d8f7029b16aa47fec0b0df89bc8d3d9c
-      size: 3102
+      md5: f2bd6f0d41cd159f842f4966161be2fa
+      size: 5162
     - path: Insurance/pipeline/training_pipeline/07_model_pusher.py
       hash: md5
       md5: db0b60d7c16ab5e27678160a954d8241
@@ -186,10 +187,10 @@ stages:
       nfiles: 1
     - path: artifact/model_training/
       hash: md5
-      md5: 08c8d5169cff895ec64218059f392751.dir
-      size: 1939373
+      md5: 85b1940355c7fbcf1d4d9ec798fc3522.dir
+      size: 2521998
       nfiles: 2
     - path: config/config.yaml
       hash: md5
-      md5: 231033e848fbcc9dd908d04347b34ccf
-      size: 1120
+      md5: e2dc5b8826787095a09d3355112e0fac
+      size: 1122

@@ -1,0 +1,15 @@
+artifact_uri: file:///E:/Projects/Insurance_DB_DVC_New/mlruns/407444702796852872/539747c8658d4f8c9d0099ec69de90b8/artifacts
+end_time: 1691903261923
+entry_point_name: ''
+experiment_id: '407444702796852872'
+lifecycle_stage: active
+run_id: 539747c8658d4f8c9d0099ec69de90b8
+run_name: legendary-skink-114
+run_uuid: 539747c8658d4f8c9d0099ec69de90b8
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1691903261913
+status: 3
+tags: []
+user_id: Hitesh

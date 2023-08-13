@@ -126,14 +126,19 @@ class param_optimsation:
             
             best_model,best_model_params,R2_score=training.choose_best_model(results_df=results_df)
             
+            
             logging.info(f" Best model : {best_model}")
             
             logging.info(f" Best Paramaters : {best_model_params}")
             
             logging.info(f"R2 Score : {R2_score}")
             
+
+            experiment_name='Experiment_00'
+            
             # Create a dictionary to hold the information
             info_dict = {
+                "Experiment" : experiment_name,
                 "Model_name": best_model,
                 "Parameters": best_model_params,
 

@@ -87,6 +87,7 @@ class ModelTrainer :
             
             model_name=params_yaml_data['Model_name']
             parameters=params_yaml_data['Parameters']
+            experiment_name=params_yaml_data['Experiment']
             
             training=Regressor(X_train=X_train,X_test=X_test,y_train=y_train,y_test=y_test)
             model=training.fit_model(model_name=model_name,model_parameters=parameters)
@@ -100,11 +101,11 @@ class ModelTrainer :
                 "R2_score"  : R2_score
             }
             
-            
             ## Params file from Artifact 
             param_artifact_yaml_path=self.param_artifact.param_yaml_file_path
             # Create a dictionary to hold the information
             info_dict = {
+                "Experiment" : experiment_name,
                 "Model_name": model_name,
                 "Parameters": parameters,
             }
@@ -136,8 +137,6 @@ class ModelTrainer :
             
             # Saving report 
             utils.write_yaml_file(file_path=self.model_training_config.model_report,data=model_report)
-
-        
             
         except Exception as e:
             raise InsuranceException(e, sys)

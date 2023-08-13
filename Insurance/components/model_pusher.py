@@ -11,12 +11,49 @@ from Insurance.entity.artifact_entity import *
 from Insurance.utils import load_object,save_object,add_dict_to_yaml
 from Insurance.constant import *     
 from Insurance.constant import *       
+import mlflow
+
+class MLFlowExperiment:
+    def __init__(self, experiment_name):
+        self.experiment_name = experiment_name
+        self.experiment_id = None
+
+    def create_experiment(self):
+        self.experiment_id = mlflow.create_experiment(self.experiment_name)
+        print(f"Experiment '{self.experiment_name}' created with ID: {self.experiment_id}")
+
+    def log_metrics(self, metrics):
+        if self.experiment_id is None:
+            print("Experiment not created. Call 'create_experiment()' first.")
+            return
+
+        with mlflow.start_run(experiment_id=self.experiment_id):
+            for metric_name, metric_value in metrics.items():
+                mlflow.log_metric(metric_name, metric_value)
+                print(f"Logged metric: {metric_name} = {metric_value}")
+
+    def log_parameters(self, parameters):
+        if self.experiment_id is None:
+            print("Experiment not created. Call 'create_experiment()' first.")
+            return
+
+        with mlflow.start_run(experiment_id=self.experiment_id):
+            for param_name, param_value in parameters.items():
+                mlflow.log_param(param_name, param_value)
+                print(f"Logged parameter: {param_name} = {param_value}")
+
+    def log_model(self, model_path, model_name):
+        if self.experiment_id is None:
+            print("Experiment not created. Call 'create_experiment()' first.")
+            return
+
+        with mlflow.start_run(experiment_id=self.experiment_id):
+            mlflow.log_artifact(model_path, artifact_path="models")
+            print(f"Logged model: {model_name}")
+
 
             
-            
-            
-            
-          
+
 class ModelPusher:
 
     def __init__(self,model_eval_artifact:ModelEvaluationArtifact):
@@ -54,8 +91,18 @@ class ModelPusher:
             
             save_object(file_path=file_path, obj=model)
             logging.info("Model saved.")
+            
+            params_yaml_data=read_yaml_file('params.yaml')
+            experiment_name=params_yaml_data['Experiment']
 
-           
+            mlflow_experiment = MLFlowExperiment(experiment_name)
+            mlflow_experiment.create_experiment()
+            
+            mlflow_experiment.log_metrics({'R2_score': R2_score})
+            mlflow_experiment.log_parameters(parameters)
+            mlflow_experiment.log_model(model_path, model_name)
+
+                
             
             # Create a dictionary for the report
             report = {'Model_name': model_name, 'R2_score': R2_score,

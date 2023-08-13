@@ -1,0 +1,15 @@
+artifact_uri: file:///E:/Projects/Insurance_DB_DVC_New/mlruns/407444702796852872/cb6b30f6c33e44ef9190703d0fd7251f/artifacts
+end_time: 1691903261952
+entry_point_name: ''
+experiment_id: '407444702796852872'
+lifecycle_stage: active
+run_id: cb6b30f6c33e44ef9190703d0fd7251f
+run_name: luxuriant-bass-123
+run_uuid: cb6b30f6c33e44ef9190703d0fd7251f
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1691903261939
+status: 3
+tags: []
+user_id: Hitesh

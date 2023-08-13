@@ -1,0 +1,15 @@
+artifact_uri: file:///E:/Projects/Insurance_DB_DVC_New/mlruns/315168850850981902/04f701566cf24d05ac9591802eaa2f36/artifacts
+end_time: 1691902557034
+entry_point_name: ''
+experiment_id: '315168850850981902'
+lifecycle_stage: active
+run_id: 04f701566cf24d05ac9591802eaa2f36
+run_name: abrasive-snake-266
+run_uuid: 04f701566cf24d05ac9591802eaa2f36
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1691902557025
+status: 3
+tags: []
+user_id: Hitesh
