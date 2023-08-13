@@ -12,47 +12,31 @@ from Insurance.utils import load_object,save_object,add_dict_to_yaml
 from Insurance.constant import *     
 from Insurance.constant import *       
 import mlflow
+def log_mlflow_experiment(experiment_name, model_name, R2_score, parameters, model_path):
+    """
+    Log experiment details and metrics using MLflow.
 
-class MLFlowExperiment:
-    def __init__(self, experiment_name):
-        self.experiment_name = experiment_name
-        self.experiment_id = None
+    Args:
+        experiment_name (str): Name of the experiment.
+        model_name (str): Name of the model.
+        R2_score (float): R2 score metric.
+        parameters (dict): Model parameters.
+        model_path (str): Path to the trained model.
 
-    def create_experiment(self):
-        self.experiment_id = mlflow.create_experiment(self.experiment_name)
-        print(f"Experiment '{self.experiment_name}' created with ID: {self.experiment_id}")
+    Returns:
+        None
+    """
+    logging.basicConfig(level=logging.INFO)  # Set appropriate logging level
 
-    def log_metrics(self, metrics):
-        if self.experiment_id is None:
-            print("Experiment not created. Call 'create_experiment()' first.")
-            return
+    # Create or get the experiment
+    mlflow.set_experiment(experiment_name)
 
-        with mlflow.start_run(experiment_id=self.experiment_id):
-            for metric_name, metric_value in metrics.items():
-                mlflow.log_metric(metric_name, metric_value)
-                print(f"Logged metric: {metric_name} = {metric_value}")
-
-    def log_parameters(self, parameters):
-        if self.experiment_id is None:
-            print("Experiment not created. Call 'create_experiment()' first.")
-            return
-
-        with mlflow.start_run(experiment_id=self.experiment_id):
-            for param_name, param_value in parameters.items():
-                mlflow.log_param(param_name, param_value)
-                print(f"Logged parameter: {param_name} = {param_value}")
-
-    def log_model(self, model_path, model_name):
-        if self.experiment_id is None:
-            print("Experiment not created. Call 'create_experiment()' first.")
-            return
-
-        with mlflow.start_run(experiment_id=self.experiment_id):
-            mlflow.log_artifact(model_path, artifact_path="models")
-            print(f"Logged model: {model_name}")
-
-
-            
+    # Start a run
+    with mlflow.start_run(run_name=model_name):
+        # Log metrics, params, and model
+        mlflow.log_metric("R2_score", R2_score)
+        mlflow.log_params(parameters)
+        mlflow.log_artifact(model_path)
 
 class ModelPusher:
 
@@ -95,14 +79,11 @@ class ModelPusher:
             params_yaml_data=read_yaml_file('params.yaml')
             experiment_name=params_yaml_data['Experiment']
 
-            mlflow_experiment = MLFlowExperiment(experiment_name)
-            mlflow_experiment.create_experiment()
-            
-            mlflow_experiment.log_metrics({'R2_score': R2_score})
-            mlflow_experiment.log_parameters(parameters)
-            mlflow_experiment.log_model(model_path, model_name)
-
-                
+            log_mlflow_experiment(experiment_name=experiment_name,
+                                  model_name=model_name,
+                                  model_path=model_path,
+                                  R2_score=R2_score,
+                                  parameters=parameters)
             
             # Create a dictionary for the report
             report = {'Model_name': model_name, 'R2_score': R2_score,
