@@ -59,7 +59,7 @@ class ModelPusher:
             
             # Create a dictionary for the report
             report = {'Model_name': model_name, 'R2_score': R2_score,
-                      'Paramters': parameters,'Report_path': report_path}
+                      'Parameters': parameters,'Report_path': report_path}
 
             logging.info(str(report))
             

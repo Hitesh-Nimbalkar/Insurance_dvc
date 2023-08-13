@@ -9,6 +9,7 @@ import xgboost as xgb
 from sklearn.ensemble import RandomForestRegressor, GradientBoostingRegressor
 from sklearn.metrics import r2_score
 from sklearn.model_selection import GridSearchCV
+import yaml
 
 class Regressor:
     def __init__(self, X_train, X_test, y_train, y_test):
@@ -40,7 +41,13 @@ class Regressor:
         
         self.fitted_model = model_instance
         return model_instance
-
+    def calculate_r2_score(self):
+        if self.fitted_model is None:
+            raise ValueError("No model has been fitted yet.")
+        
+        y_pred = self.fitted_model.predict(self.X_test)
+        r2 = r2_score(self.y_test, y_pred)
+        return r2
 
 
 
@@ -73,28 +80,41 @@ class ModelTrainer :
             X_train=utils.load_numpy_array_data(self.data_transformation_artifact.transformed_train_path)
             X_test=utils.load_numpy_array_data(self.data_transformation_artifact.transformed_test_path)
             
-            # Params yaml file 
-            params_data = utils.read_yaml_file(self.param_artifact.param_yaml_file_path)
+
+
+            # Params.yamal from Root directory 
+            params_yaml_data=utils.read_yaml_file('params.yaml')
             
-            model_name=params_data['best_model']
-            parameters=params_data['params']
-            R2_score=params_data['R2_score']
+            model_name=params_yaml_data['Model_name']
+            parameters=params_yaml_data['Parameters']
             
-            
-            # Model training 
             training=Regressor(X_train=X_train,X_test=X_test,y_train=y_train,y_test=y_test)
             model=training.fit_model(model_name=model_name,model_parameters=parameters)
+            R2_score=str(training.calculate_r2_score())
             
+            params_yaml_data['R2_score']=R2_score
             
             model_report ={
                 "Model_name": model_name,
                 "Parameters" : parameters,
                 "R2_score"  : R2_score
-                
-                
-    
             }
             
+            
+            ## Params file from Artifact 
+            param_artifact_yaml_path=self.param_artifact.param_yaml_file_path
+            # Create a dictionary to hold the information
+            info_dict = {
+                "Model_name": model_name,
+                "Parameters": parameters,
+            }
+            
+            # Write the dictionary to the YAML file
+            with open(param_artifact_yaml_path, 'w') as yaml_file:
+                yaml.dump(info_dict, yaml_file, default_flow_style=False)
+                
+            
+
             model_trainer_artifact={'model_trainer_artifact': { 'model_file_path' :self.model_training_config.model_object,
                                                                'Report_path' :self.model_training_config.model_report
                 

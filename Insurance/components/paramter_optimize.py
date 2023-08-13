@@ -134,9 +134,8 @@ class param_optimsation:
             
             # Create a dictionary to hold the information
             info_dict = {
-                "best_model": best_model,
-                "params": best_model_params,
-                "R2_score": str(R2_score)
+                "Model_name": best_model,
+                "Parameters": best_model_params,
             }
             
             param_dir=self.paramter_optimise_config.parameter_directory
@@ -148,6 +147,12 @@ class param_optimsation:
 
             # Write the dictionary to the YAML file
             with open(param_file_path, 'w') as yaml_file:
+                yaml.dump(info_dict, yaml_file, default_flow_style=False)
+                
+                
+                
+                # Write the dictionary to the YAML file
+            with open('params.yaml', 'w') as yaml_file:
                 yaml.dump(info_dict, yaml_file, default_flow_style=False)
                 
             logging.info(" Param Dictionary Dumped ")
