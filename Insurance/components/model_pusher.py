@@ -12,7 +12,10 @@ from Insurance.utils import load_object,save_object,add_dict_to_yaml
 from Insurance.constant import *     
 from Insurance.constant import *       
 import mlflow
-def log_mlflow_experiment(experiment_name, model_name, R2_score, parameters, model_path):
+from dotenv import load_dotenv
+
+
+def log_mlflow_experiment(experiment_name, model_name, R2_score, parameters, model_path,tracking_uri):
     """
     Log experiment details and metrics using MLflow.
 
@@ -26,7 +29,8 @@ def log_mlflow_experiment(experiment_name, model_name, R2_score, parameters, mod
     Returns:
         None
     """
-    logging.basicConfig(level=logging.INFO)  # Set appropriate logging level
+
+    mlflow.set_tracking_uri(tracking_uri)
 
     # Create or get the experiment
     mlflow.set_experiment(experiment_name)
@@ -50,6 +54,13 @@ class ModelPusher:
             
         except  Exception as e:
             raise InsuranceException(e, sys)
+        
+    def load_credentials_from_env(self,env_file_name=".env", uri="MLFLOW_TRACKING_URI"):
+        root_dir = os.getcwd()
+        env_file_path = os.path.join(root_dir, env_file_name)
+        load_dotenv(dotenv_path=env_file_path)
+        tracking_uri = os.getenv(uri)
+        return tracking_uri       
       
             
             
@@ -78,12 +89,17 @@ class ModelPusher:
             
             params_yaml_data=read_yaml_file('params.yaml')
             experiment_name=params_yaml_data['Experiment']
+            
+            
+            tracking_uri=self.load_credentials_from_env()
+            
+            logging.info(f" Traing Uri accessed : {tracking_uri}")
 
             log_mlflow_experiment(experiment_name=experiment_name,
                                   model_name=model_name,
                                   model_path=model_path,
                                   R2_score=R2_score,
-                                  parameters=parameters)
+                                  parameters=parameters,tracking_uri=tracking_uri)
             
             # Create a dictionary for the report
             report = {'Model_name': model_name, 'R2_score': R2_score,

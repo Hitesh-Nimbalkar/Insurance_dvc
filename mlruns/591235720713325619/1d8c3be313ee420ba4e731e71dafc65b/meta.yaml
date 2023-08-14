@@ -1,0 +1,15 @@
+artifact_uri: file:///E:/Projects/Insurance_DB_DVC_New/mlruns/591235720713325619/1d8c3be313ee420ba4e731e71dafc65b/artifacts
+end_time: 1691919700081
+entry_point_name: ''
+experiment_id: '591235720713325619'
+lifecycle_stage: active
+run_id: 1d8c3be313ee420ba4e731e71dafc65b
+run_name: Gradient Boosting Regression
+run_uuid: 1d8c3be313ee420ba4e731e71dafc65b
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1691919700061
+status: 3
+tags: []
+user_id: Hitesh

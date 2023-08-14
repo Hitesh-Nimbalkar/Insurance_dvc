@@ -8,8 +8,8 @@ from Insurance.constant import *
 import xgboost as xgb
 from sklearn.ensemble import RandomForestRegressor, GradientBoostingRegressor
 from sklearn.metrics import r2_score
-from sklearn.model_selection import GridSearchCV
 import yaml
+
 
 class Regressor:
     def __init__(self, X_train, X_test, y_train, y_test):
@@ -68,6 +68,11 @@ class ModelTrainer :
             
         except Exception as e:
             raise InsuranceException(e, sys)
+        
+
+        
+        
+
         
     def start_model_training(self):
         
