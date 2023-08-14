@@ -12,6 +12,7 @@ data_validation_artifact:
   validated_train_path: E:\Projects\Insurance_DB_DVC_New\artifact\data_validation\Train\train.csv
 model_evaluation_artifact:
   eval_report: E:\Projects\Insurance_DB_DVC_New\artifact\model_evaluation\model_report.yaml
+model_pusher_artifact: Model Pushed succeessfully
 model_trainer_artifact:
   Report_path: E:\Projects\Insurance_DB_DVC_New\artifact\model_training\report.yaml
   model_file_path: E:\Projects\Insurance_DB_DVC_New\artifact\model_training\model.pkl

@@ -30,17 +30,9 @@ def log_mlflow_experiment(experiment_name, model_name, R2_score, parameters, mod
         None
     """
 
-    mlflow.set_tracking_uri(tracking_uri)
+    
 
-    # Create or get the experiment
-    mlflow.set_experiment(experiment_name)
-
-    # Start a run
-    with mlflow.start_run(run_name=model_name):
-        # Log metrics, params, and model
-        mlflow.log_metric("R2_score", R2_score)
-        mlflow.log_params(parameters)
-        mlflow.log_artifact(model_path)
+ 
 
 class ModelPusher:
 
@@ -55,12 +47,12 @@ class ModelPusher:
         except  Exception as e:
             raise InsuranceException(e, sys)
         
-    def load_credentials_from_env(self,env_file_name=".env", uri="MLFLOW_TRACKING_URI"):
+    def load_credentials_from_env(self,variable,env_file_name=".env" ):
         root_dir = os.getcwd()
         env_file_path = os.path.join(root_dir, env_file_name)
         load_dotenv(dotenv_path=env_file_path)
-        tracking_uri = os.getenv(uri)
-        return tracking_uri       
+       
+        return os.getenv(variable)     
       
             
             
@@ -91,15 +83,23 @@ class ModelPusher:
             experiment_name=params_yaml_data['Experiment']
             
             
-            tracking_uri=self.load_credentials_from_env()
+            tracking_uri=self.load_credentials_from_env(variable='MLFLOW_TRACKING_URI')
             
             logging.info(f" Traing Uri accessed : {tracking_uri}")
-
-            log_mlflow_experiment(experiment_name=experiment_name,
-                                  model_name=model_name,
-                                  model_path=model_path,
-                                  R2_score=R2_score,
-                                  parameters=parameters,tracking_uri=tracking_uri)
+            
+            
+            mlflow.set_tracking_uri(tracking_uri)
+            # Create or get the experiment
+            mlflow.set_experiment(experiment_name)
+            
+            # Start a run
+            with mlflow.start_run(run_name=model_name):
+                # Log metrics, params, and model
+                mlflow.log_metric("R2_score", R2_score)
+                mlflow.log_params(parameters)
+                mlflow.log_artifact(model_path)
+                
+            # Set tracking uri for remote storage
             
             # Create a dictionary for the report
             report = {'Model_name': model_name, 'R2_score': R2_score,
