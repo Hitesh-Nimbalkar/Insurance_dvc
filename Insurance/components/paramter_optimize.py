@@ -135,10 +135,12 @@ class param_optimsation:
             
 
             experiment_name='Experiment_00'
+            run_name='run_name'
             
             # Create a dictionary to hold the information
             info_dict = {
                 "Experiment" : experiment_name,
+                "run_name"   : run_name,
                 "Model_name": best_model,
                 "Parameters": best_model_params,
 

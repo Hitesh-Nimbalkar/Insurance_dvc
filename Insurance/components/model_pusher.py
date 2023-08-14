@@ -39,8 +39,6 @@ class ModelPusher:
         return os.getenv(variable)     
       
             
-            
-            
     def initiate_model_pusher(self):
         try:
             # Selected model path
@@ -65,25 +63,25 @@ class ModelPusher:
             
             params_yaml_data=read_yaml_file('params.yaml')
             experiment_name=params_yaml_data['Experiment']
-            
+            run_name=params_yaml_data['run_name']
             
             tracking_uri=self.load_credentials_from_env(variable='MLFLOW_TRACKING_URI')
             
             logging.info(f" Traing Uri accessed : {tracking_uri}")
             
-            
+            # Set tracking uri for remote storage
             mlflow.set_tracking_uri(tracking_uri)
             # Create or get the experiment
             mlflow.set_experiment(experiment_name)
             
             # Start a run
-            with mlflow.start_run(run_name=model_name):
+            with mlflow.start_run(run_name=run_name):
                 # Log metrics, params, and model
                 mlflow.log_metric("R2_score", R2_score)
                 mlflow.log_params(parameters)
                 mlflow.log_artifact(model_path)
                 
-            # Set tracking uri for remote storage
+            
             
             # Create a dictionary for the report
             report = {'Model_name': model_name, 'R2_score': R2_score,

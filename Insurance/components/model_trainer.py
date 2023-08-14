@@ -93,6 +93,8 @@ class ModelTrainer :
             model_name=params_yaml_data['Model_name']
             parameters=params_yaml_data['Parameters']
             experiment_name=params_yaml_data['Experiment']
+            run_name=params_yaml_data['run_name']
+            
             
             training=Regressor(X_train=X_train,X_test=X_test,y_train=y_train,y_test=y_test)
             model=training.fit_model(model_name=model_name,model_parameters=parameters)
@@ -111,6 +113,7 @@ class ModelTrainer :
             # Create a dictionary to hold the information
             info_dict = {
                 "Experiment" : experiment_name,
+                "Run_name"   : run_name,
                 "Model_name": model_name,
                 "Parameters": parameters,
             }
