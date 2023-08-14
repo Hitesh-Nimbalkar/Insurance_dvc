@@ -14,22 +14,6 @@ from Insurance.constant import *
 import mlflow
 from dotenv import load_dotenv
 
-
-def log_mlflow_experiment(experiment_name, model_name, R2_score, parameters, model_path,tracking_uri):
-    """
-    Log experiment details and metrics using MLflow.
-
-    Args:
-        experiment_name (str): Name of the experiment.
-        model_name (str): Name of the model.
-        R2_score (float): R2 score metric.
-        parameters (dict): Model parameters.
-        model_path (str): Path to the trained model.
-
-    Returns:
-        None
-    """
-
     
 
  
