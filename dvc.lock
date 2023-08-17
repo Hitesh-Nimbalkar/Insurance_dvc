@@ -90,8 +90,8 @@ stages:
     deps:
     - path: Insurance/components/paramter_optimize.py
       hash: md5
-      md5: 53387715854793e72d6fc6de7b76a24b
-      size: 6695
+      md5: 30fffd2521bbdb75dd8801da4e54d6c9
+      size: 6984
     - path: Insurance/pipeline/training_pipeline/04_param_optimisation.py
       hash: md5
       md5: 83e39f35a6bd6227989117567c74a9ca
@@ -108,7 +108,7 @@ stages:
     outs:
     - path: artifact/param_op/
       hash: md5
-      md5: b76a7e8723b44510049c67cb2fe2fceb.dir
+      md5: 628bb74643f5c51308bf3ac3b0d8bcea.dir
       size: 161
       nfiles: 1
   model_trainer_stage:
@@ -133,61 +133,55 @@ stages:
       size: 1122
     params:
       params.yaml:
-        Experiment: Experiment_02
-        Parameters.learning_rate: 0.1
+        Experiment: Experiment_06
+        Parameters.learning_rate: 2
         Parameters.max_depth: 7
         Parameters.n_estimators: 200
     outs:
     - path: artifact/model_training/
       hash: md5
-      md5: 3dd09bc6137265a38ee0f091028ff25f.dir
-      size: 2521998
+      md5: e927a2e94e2a5216367cf6066b876fbb.dir
+      size: 3044035
       nfiles: 2
   model_evaluation_stage:
     cmd: python Insurance/pipeline/training_pipeline/06_model_evaluation.py
     deps:
     - path: Insurance/components/model_evaluation.py
       hash: md5
-      md5: 541fd42e31a18197a6bb6fb08393ec64
-      size: 6781
+      md5: e2e72ddd7395d605a9ca85e3d5bca66d
+      size: 6856
     - path: Insurance/pipeline/training_pipeline/06_model_evaluation.py
       hash: md5
       md5: f354c9a4233daebdbb10959a1316878b
       size: 1829
     - path: artifact/model_training/
       hash: md5
-      md5: 3dd09bc6137265a38ee0f091028ff25f.dir
-      size: 2521998
+      md5: e927a2e94e2a5216367cf6066b876fbb.dir
+      size: 3044035
       nfiles: 2
     - path: config/config.yaml
       hash: md5
       md5: e2dc5b8826787095a09d3355112e0fac
       size: 1122
-    outs:
-    - path: artifact/model_evaluation/
-      hash: md5
-      md5: 64836a1d5a022efcc221b97a589a4f3b.dir
-      size: 344
-      nfiles: 1
   model_pusher_stage:
     cmd: python Insurance/pipeline/training_pipeline/07_model_pusher.py
     deps:
     - path: Insurance/components/model_pusher.py
       hash: md5
-      md5: 3e03b0e601c65d76ffd1c312156098d3
-      size: 4240
+      md5: a953732a0874c0cf29b972b8efc95f9b
+      size: 5481
     - path: Insurance/pipeline/training_pipeline/07_model_pusher.py
       hash: md5
       md5: db0b60d7c16ab5e27678160a954d8241
       size: 1623
     - path: artifact/model_evaluation/
       hash: md5
-      md5: 64836a1d5a022efcc221b97a589a4f3b.dir
-      size: 344
+      md5: 05457b6a9bc8e0f912b1850d6dcefcbc.dir
+      size: 340
       nfiles: 1
     - path: artifact/model_training/
       hash: md5
-      md5: 3dd09bc6137265a38ee0f091028ff25f.dir
+      md5: d0fa108b4d804c6695c23d159a93c052.dir
       size: 2521998
       nfiles: 2
     - path: config/config.yaml

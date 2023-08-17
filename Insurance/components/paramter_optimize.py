@@ -133,9 +133,16 @@ class param_optimsation:
             
             logging.info(f"R2 Score : {R2_score}")
             
-
-            experiment_name='Experiment_00'
-            run_name='run_name'
+            if not os.path.exists('params.yaml'):
+                experiment_name='Experiment_00'
+                run_name='run_name'
+                
+            else:
+                params=utils.read_yaml_file('params.yaml')
+                experiment_name=params['Experiment']
+                run_name=params['run_name']
+                
+                
             
             # Create a dictionary to hold the information
             info_dict = {

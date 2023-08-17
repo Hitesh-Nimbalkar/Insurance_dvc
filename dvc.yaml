@@ -63,8 +63,8 @@ stages:
       - config/config.yaml
       - Insurance/pipeline/training_pipeline/06_model_evaluation.py
       - artifact/model_training/
-    outs:
-      - artifact/model_evaluation/
+   # outs:
+     # - artifact/model_evaluation/
 
   model_pusher_stage:
     cmd: python Insurance/pipeline/training_pipeline/07_model_pusher.py
