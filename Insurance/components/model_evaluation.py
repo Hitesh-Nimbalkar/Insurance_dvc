@@ -18,7 +18,7 @@ class Experiments_evaluation:
     def __init__(self) :
         pass
     # Function to save run details to YAML file
-    def save_run_details_to_yaml(self,run_id,experiment,model_name,best_model_path):
+    def save_run_details_to_yaml(self,run_id,experiment,model_name,model_uri,model_path):
         client = MlflowClient()
         run = client.get_run(run_id=run_id)
         
@@ -27,9 +27,10 @@ class Experiments_evaluation:
             "Model_name":model_name,
             "run_id": run.info.run_id,
             "experiment_id": run.info.experiment_id,
-            "params": run.data.params,
+            "Parameters": run.data.params,
             "metrics": run.data.metrics,
-            "Model_path": best_model_path
+            "Model_uri": model_uri,
+            "Model_path":model_path
         }
             
         return report
@@ -52,8 +53,10 @@ class Experiments_evaluation:
         
         # Load the best model
       #  best_model = mlflow.sklearn.load_model(f"runs:/{best_run_id}/model")
-        best_model_path=(f"runs:/{best_run_id}/model")
-        return best_model_path,best_run_id
+        model_uri=(f"runs:/{best_run_id}/model")
+        # Get the local filesystem path for the model
+        model_path = mlflow.get_artifact_uri(best_run_id)
+        return model_uri,model_path,best_run_id
 
     def run_mlflow_experiment(self,experiment_name, run_name, R2_score, parameters, model):
         """
@@ -111,11 +114,15 @@ class ModelEvaluation:
         
         
     def initiate_model_evaluation(self) -> ModelEvaluationArtifact:
-        try:
+        
             logging.info(" Model Evaluation Started ")
+            
             ## Artifact trained Model  files
             model_trained_artifact_path = self.model_trainer_artifact.model_object_file_path
             model_trained_report = self.model_trainer_artifact.model_report_file_path
+            
+            
+            
             
             
             # Model evaludation report Directoy 
@@ -129,12 +136,16 @@ class ModelEvaluation:
             
             Exp_eval=Experiments_evaluation()
 
+            # Saved Model files
+            saved_model_path = self.saved_model_config.saved_model_file_path
+            saved_model_report_path=self.saved_model_config.saved_model_report_path
+
             # Loading the models
             logging.info("Saved_models directory .....")
             os.makedirs(self.saved_model_directory,exist_ok=True)
             
-
-                
+            # Check if SAVED_MODEL_DIRECTORY is empty
+            #if not os.listdir(self.saved_model_directory):
             # Report 
             model_trained_report_data = read_yaml_file(file_path=model_trained_report)
             
@@ -143,18 +154,72 @@ class ModelEvaluation:
             model_name = model_trained_report_data['Model_name']
             R2_score = artifact_model_r2_score
             
-            best_model_path, best_run_id=Exp_eval.run_mlflow_experiment(experiment_name=experiment_name,
+            model_uri,model_path,best_run_id=Exp_eval.run_mlflow_experiment(experiment_name=experiment_name,
                                                     run_name=run_name,
                                                     R2_score=R2_score,
                                                     parameters=artifact_model_params,
                                                     model=model_trained_artifact_path)
             
             report=Exp_eval.save_run_details_to_yaml(
-                                              run_id=best_run_id,
-                                              experiment=experiment_name,model_name=model_name,best_model_path=best_model_path)
-        
+                                            run_id=best_run_id,
+                                            experiment=experiment_name,
+                                            model_name=model_name,
+                                            model_uri=model_uri,
+                                            model_path=model_path)
             
             write_yaml_file(file_path=self.model_evaluation_config.model_eval_report,data=report)
+        
+        
+sys.exit()
+'''
+       #     else:
+                saved_model_report_data = read_yaml_file(file_path=saved_model_report_path)
+                model_trained_report_data = read_yaml_file(file_path=model_trained_report)
+                
+                # Compare the R2_scores and accuracy of the two models
+                saved_model_r2_score = float(saved_model_report_data['R2_score'])
+
+                artifact_model_R2_score =float(model_trained_report_data['R2_score'])
+                
+                
+                # Compare the models and log the result
+                if artifact_model_R2_score > saved_model_r2_score:
+                    logging.info("Trained model outperforms the saved model!")
+                    model_path = model_trained_artifact_path
+                    
+                    model_report_path = model_trained_report
+                    model_name = model_trained_report_data['Model_name']
+                    R2_score = float( model_trained_report_data['R2_score'])
+                    
+                    comment='Trained Model is better than Saved model'
+                    
+                    logging.info(f"Model Selected : {model_name}")
+                    logging.info(f"R2_score : {R2_score}")
+            
+
+            
+            
+            
+           # write_yaml_file(file_path=self.model_evaluation_config.model_eval_report,data=report)
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
             
             artifact_report_path=self.model_evaluation_config.model_eval_report
             model_evaluation_artifact= {'model_evaluation_artifact': {'eval_report':artifact_report_path}}
@@ -169,3 +234,4 @@ class ModelEvaluation:
 
     def __del__(self):
         logging.info(f"\n{'*'*20} Model evaluation log completed {'*'*20}\n\n")
+'''

@@ -35,6 +35,8 @@ class data_validation():
             data_validation = DataValidation(data_validation_config=DataValidationConfig(self.training_pipeline_config),
                                              data_ingestion_artifact=DataIngestionArtifact(train_file_path=train_path,
                                                                                            test_file_path=test_path))
+            
+            logging.info(" Starting Data Validation")
             data_validation.initiate_data_validation()
         except Exception as e:
             raise InsuranceException(e, sys) from e

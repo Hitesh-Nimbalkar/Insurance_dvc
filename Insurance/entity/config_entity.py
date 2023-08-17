@@ -57,7 +57,6 @@ class DataValidationConfig:
     def __init__(self,training_pipeline_config:TrainingPipelineConfig):
         
         data_validation_key=config_data[DATA_VALIDATION_CONFIG_KEY]
-        
         self.data_validation_dir = os.path.join(training_pipeline_config.artifact_dir ,data_validation_key[DATA_VALIDATION_ARTIFACT_DIR])
         self.validated_dir=os.path.join(training_pipeline_config.artifact_dir,data_validation_key[DATA_VALIDATION_VALID_DATASET])
         self.validated_train_path=os.path.join(self.data_validation_dir,data_validation_key[DATA_VALIDATION_TRAIN_FILE])

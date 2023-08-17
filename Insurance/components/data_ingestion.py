@@ -114,7 +114,7 @@ class DataIngestion:
                                  'train_file_path' : abs_train_file_path ,
                                   'test_file_path' : abs_test_file_path}}
         
-        logging.info(f" Data Validation artifact : {data_ingestion_artifact}")
+        logging.info(f" Data Ingestion artifact : {data_ingestion_artifact}")
         
         write_yaml_file(file_path=ARTIFACT_ENTITY_YAML_FILE_PATH,data=data_ingestion_artifact)
        

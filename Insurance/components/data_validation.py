@@ -72,6 +72,7 @@ class DataValidation:
         try:
             validation_status = True
             logging.info("Validation Process Started")
+            
             if self.isFolderPathAvailable() == True:
                 
                 # Train file 
