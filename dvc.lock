@@ -131,6 +131,10 @@ stages:
       hash: md5
       md5: e2dc5b8826787095a09d3355112e0fac
       size: 1122
+    - path: params.yaml
+      hash: md5
+      md5: e4de11f560b7d62a68a9f67fc8364ecb
+      size: 161
     params:
       params.yaml:
         Experiment: Experiment_02
@@ -140,7 +144,7 @@ stages:
     outs:
     - path: artifact/model_training/
       hash: md5
-      md5: 3dd09bc6137265a38ee0f091028ff25f.dir
+      md5: 678c6e0fcdfb0e22e134e0e3f426c208.dir
       size: 2521998
       nfiles: 2
   model_evaluation_stage:
@@ -156,7 +160,7 @@ stages:
       size: 1829
     - path: artifact/model_training/
       hash: md5
-      md5: 3dd09bc6137265a38ee0f091028ff25f.dir
+      md5: 678c6e0fcdfb0e22e134e0e3f426c208.dir
       size: 2521998
       nfiles: 2
     - path: config/config.yaml
@@ -178,8 +182,8 @@ stages:
       size: 4240
     - path: Insurance/pipeline/training_pipeline/07_model_pusher.py
       hash: md5
-      md5: db0b60d7c16ab5e27678160a954d8241
-      size: 1623
+      md5: 9ad2591dbe786dfda4a184b0556f714e
+      size: 1581
     - path: artifact/model_evaluation/
       hash: md5
       md5: 64836a1d5a022efcc221b97a589a4f3b.dir
@@ -187,7 +191,7 @@ stages:
       nfiles: 1
     - path: artifact/model_training/
       hash: md5
-      md5: 3dd09bc6137265a38ee0f091028ff25f.dir
+      md5: 678c6e0fcdfb0e22e134e0e3f426c208.dir
       size: 2521998
       nfiles: 2
     - path: config/config.yaml

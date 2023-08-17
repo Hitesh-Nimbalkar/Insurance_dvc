@@ -36,9 +36,6 @@ class model_pusher():
 
             
             
-            
-            
-            
             model_pusher = ModelPusher(model_eval_artifact=ModelEvaluationArtifact(model_eval_report_path=model_eval_path
                                                                                     ))
             model_pusher_artifact = model_pusher.initiate_model_pusher()

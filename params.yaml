@@ -4,4 +4,4 @@ Parameters:
   learning_rate: 0.1
   max_depth: 7
   n_estimators: 200
-run_name: First_run
+run_name: run_name

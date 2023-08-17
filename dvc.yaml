@@ -48,6 +48,7 @@ stages:
       - config/config.yaml
       - Insurance/pipeline/training_pipeline/05_model_trainer.py
       - artifact/data_transformation/
+      - params.yaml
     params:
       - Parameters.learning_rate
       - Parameters.max_depth
