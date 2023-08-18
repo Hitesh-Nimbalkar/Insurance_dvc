@@ -170,7 +170,7 @@ stages:
     outs:
     - path: artifact/model_evaluation/
       hash: md5
-      md5: b10f79d34d1a03e0cf193a0ffd5739e9.dir
+      md5: 6c68de03cb741f59fe1cef9f5b1621d6.dir
       size: 335
       nfiles: 1
   model_pusher_stage:
@@ -186,7 +186,7 @@ stages:
       size: 1581
     - path: artifact/model_evaluation/
       hash: md5
-      md5: b10f79d34d1a03e0cf193a0ffd5739e9.dir
+      md5: 6c68de03cb741f59fe1cef9f5b1621d6.dir
       size: 335
       nfiles: 1
     - path: artifact/model_training/
