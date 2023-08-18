@@ -18,20 +18,27 @@ class Experiments_evaluation:
     def __init__(self,experiment_name,run_name) :
         self.experiment_name=experiment_name
         self.run_name=run_name
+        
+        self.best_model_run_id=None
+        self.best_model_uri=None
+        self.model_path=None
+
+    
+        
     # Function to save run details to YAML file
-    def save_run_details_to_yaml(self,run_id,model_name,model_uri,run_name):
+    def save_run_details_to_yaml(self):
         client = MlflowClient()
-        run = client.get_run(run_id=run_id)
+        run = client.get_run(run_id=self.best_model_run_id)
         
         report = {
             "Experiment": self.experiment_name,
-            "Model_name":model_name,
-            "run_name":run_name,
+            "run_name":run.info.run_name,
             "run_id": run.info.run_id,
             "experiment_id": run.info.experiment_id,
             "Parameters": run.data.params,
             "metrics": run.data.metrics,
-            "Model_uri": model_uri
+            "Model_uri": self.best_model_uri,
+            "Model_path":self.model_path
         }
             
         return report
@@ -50,29 +57,19 @@ class Experiments_evaluation:
         
         # Get the best run
         best_run = runs.iloc[0]
-        best_run_id = best_run.run_id
+        self.best_model_run_id = best_run.run_id
         
         # Load the best model
-      #  best_model = mlflow.sklearn.load_model(f"runs:/{best_run_id}/model")
-        model_uri=(f"runs:/{best_run_id}/model")
-        return model_uri,best_run_id
+        self.best_model_uri=(f"runs:/{self.best_model_run_id}/model")
 
-    def run_mlflow_experiment(self, R2_score, parameters, model_path):
-        """
-        Run an MLflow experiment, log metrics, parameters, and a model,
-        and return the best model and its run ID based on the specified metric.
+
+    def run_mlflow_experiment(self,data: dict):
         
-        Parameters:
-        - experiment_name (str): Name of the MLflow experiment.
-        - run_name (str): Name of the run.
-        - R2_score (float): R2 score to be logged as a metric.
-        - parameters (dict): Dictionary of parameters to be logged.
-        - model: The machine learning model to be logged.
-        
-        Returns:
-        - best_model (object): The best model from the experiment.
-        - best_run_id (str): ID of the best run based on the specified metric.
-        """
+        model_report=data
+        R2_score=model_report['metrics']['R2_score']
+        parameters=model_report['Parameters']
+        model_path=model_report['Model_path']
+
         # Create or get the experiment
         mlflow.set_experiment(self.experiment_name)
         
@@ -85,11 +82,10 @@ class Experiments_evaluation:
             model = load_object(model_path)
             mlflow.sklearn.log_model(model, "model")
         
-        model_uri,best_run_id = self.get_best_model_run_id(metric_name='R2_score', experiment_name=self.experiment_name)
+        self.get_best_model_run_id(metric_name='R2_score', experiment_name=self.experiment_name)
         
-        print(f"Best model Run id: {best_run_id}")
+        print(f"Best model Run id: {self.best_model_run_id}")
         
-        return   model_uri,best_run_id
 
 
 
@@ -120,129 +116,45 @@ class ModelEvaluation:
             model_trained_artifact_path = self.model_trainer_artifact.model_object_file_path
             model_trained_report = self.model_trainer_artifact.model_report_file_path
             
-            
-            # Model evaludation report Directoy 
-            os.makedirs(self.model_evaluation_config.model_eval_directory,exist_ok=True)
-               
-            logging.info(f" Artifact Trained model :")
-            
-            params_yaml_data=read_yaml_file('params.yaml')
-            experiment_name=params_yaml_data['Experiment']
-            run_name=params_yaml_data['run_name']
-            
-            Exp_eval=Experiments_evaluation(experiment_name=experiment_name,run_name=run_name)
-
             # Saved Model files
             saved_model_path = self.saved_model_config.saved_model_file_path
             saved_model_report_path=self.saved_model_config.saved_model_report_path
+            
+            
+            # Model evaludation report Directoy 
+            os.makedirs(self.model_evaluation_config.model_eval_directory,exist_ok=True)
+            
+            logging.info(f" Artifact Trained model :")
+            params_yaml_data=read_yaml_file('params.yaml')
+            experiment_name=params_yaml_data['Experiment']
+            run_name=params_yaml_data['run_name']
+            model_name=params_yaml_data['Model_name']
 
+            # Report 
+            model_trained_report_data = read_yaml_file(file_path=model_trained_report)
+            model_trained_report_data['Model_path']=model_trained_artifact_path
+            
+            # Mlflow Code 
+            Exp_eval=Experiments_evaluation(experiment_name=experiment_name,run_name=run_name)
+            Exp_eval.run_mlflow_experiment(data=model_trained_report_data)                     
+            report=Exp_eval.save_run_details_to_yaml()   
+            
+        
             # Loading the models
             logging.info("Saved_models directory .....")
             os.makedirs(self.saved_model_directory,exist_ok=True)
             
-            # Check if SAVED_MODEL_DIRECTORY is empty
-            if not os.listdir(self.saved_model_directory):
-                # Report 
-                model_trained_report_data = read_yaml_file(file_path=model_trained_report)
-                
-                R2_score =float( model_trained_report_data['R2_score'])
-                artifact_model_params=model_trained_report_data['Parameters']
-                model_name = model_trained_report_data['Model_name']
-                
-                model_uri,best_run_id=Exp_eval.run_mlflow_experiment(R2_score=R2_score,
-                                                                                parameters=artifact_model_params,
-                                                                                model_path=model_trained_artifact_path)
-                                        
-                report=Exp_eval.save_run_details_to_yaml(run_id=best_run_id,
-                                                         run_name=run_name,
-                                                        model_name=model_name,
-                                                        model_uri=model_uri
-                                                        )             
-            else:
+                      
+            if os.listdir(self.saved_model_directory):
                 saved_model_report_data = read_yaml_file(file_path=saved_model_report_path)
-                model_trained_report_data = read_yaml_file(file_path=model_trained_report)
                 
-                # Compare the R2_scores and accuracy of the two models
-                saved_model_r2_score = float(saved_model_report_data['metrics']['R2_score'])
-                artifact_model_R2_score =float(model_trained_report_data['R2_score'])
-                       
-                # Compare the models and log the result
-                if artifact_model_R2_score > saved_model_r2_score:
-                    logging.info("Trained model outperforms the saved model!")
-                    R2_score =float( model_trained_report_data['metrics']['R2_score'])
-                    artifact_model_params=model_trained_report_data['Parameters']
-                    model_name = model_trained_report_data['Model_name']
-                    
-                    model_uri,best_run_id=Exp_eval.run_mlflow_experiment(R2_score=R2_score,
-                                                                                    parameters=artifact_model_params,
-                                                                                    model=model_trained_artifact_path)
-                    
-                    comment='Trained Model is better than Saved model'
-                    
-                    report=Exp_eval.save_run_details_to_yaml(run_id=best_run_id,
-                                                             model_name=model_name,
-                                                            model_uri=model_uri
-                                                            )
-                    
-                    
-                    
-                    logging.info(f"Model Selected : {model_name}")
-                    logging.info(f"R2_score : {R2_score}")
-                    
-                elif saved_model_r2_score>artifact_model_R2_score:
-                    logging.info("Trained model underperforms the saved model!")
-                    R2_score =float( saved_model_report_data['metrics']['R2_score'])
-                    saved_model_params=saved_model_report_data['Parameters']
-                    model_name = saved_model_report_data['Model_name']
-                    experiment_name=saved_model_report_data['Experiment']
-                    run_name=saved_model_report_data['run_name']
-           
-                    
-                    Exp_eval=Experiments_evaluation(experiment_name=experiment_name,run_name=run_name)
-                    model_uri,best_run_id=Exp_eval.run_mlflow_experiment(R2_score=R2_score,
-                                                                                    parameters=saved_model_params,
-                                                                                    model=saved_model_path)
-                    
-                    
-                    comment='Saved Model is better than Trained model'
-                             
-                    report=Exp_eval.save_run_details_to_yaml(run_id=best_run_id,
-                                                             model_name=model_name,
-                                                            model_uri=model_uri
-                                                            )
-                    
-                    
-                    
-                    logging.info(f"Model Selected : {model_name}")
-                    logging.info(f"R2_score : {R2_score}")
-                
-                else:
-                    logging.info("Trained model underperforms the saved model!")
-                    R2_score =float( saved_model_report_data['metrics']['R2_score'])
-                    saved_model_params=saved_model_report_data['Parameters']
-                    model_name = saved_model_report_data['Model_name']
-                    experiment_name=saved_model_report_data['Experiment']
-                    run_name=saved_model_report_data['run_name']
+                experiment_name=saved_model_report_data['Experiment']
+                run_name=saved_model_report_data['run_name']
+                Exp_eval=Experiments_evaluation(experiment_name=experiment_name,run_name=run_name)
+                Exp_eval.run_mlflow_experiment(data=saved_model_report_data)                     
+                report=Exp_eval.save_run_details_to_yaml()  
 
-                    
-                    Exp_eval=Experiments_evaluation(experiment_name=experiment_name,run_name=run_name)
-                    model_uri,best_run_id=Exp_eval.run_mlflow_experiment(R2_score=R2_score,
-                                                                                    parameters=saved_model_params,
-                                                                                    model_path=saved_model_path)
-                                            
-                    report=Exp_eval.save_run_details_to_yaml(run_name=run_name,
-                                                            run_id=best_run_id,
-                                                             model_name=model_name,
-                                                            model_uri=model_uri
-                                                            )
-                    
-                    comment='Saved Model and Trained model performs equally'
-                    
-                    logging.info(f"Model Selected : {model_name}")
-                    logging.info(f"R2_score : {R2_score}")
-                    
-                    
-                
+                       
             write_yaml_file(file_path=self.model_evaluation_config.model_eval_report,data=report)
             
             artifact_report_path=self.model_evaluation_config.model_eval_report

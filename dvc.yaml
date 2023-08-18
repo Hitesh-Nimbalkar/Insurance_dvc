@@ -75,3 +75,4 @@ stages:
       - Insurance/pipeline/training_pipeline/07_model_pusher.py
       - artifact/model_training/
       - artifact/model_evaluation/
+

@@ -22,7 +22,7 @@ class Regressor:
 
         self.models_dict = {
             "Random Forest Regression": RandomForestRegressor(),
-            "XGBoost Regression": xgb.XGBRegressor(),
+   #         "XGBoost Regression": xgb.XGBRegressor(),
             "Gradient Boosting Regression": GradientBoostingRegressor()
         }
 

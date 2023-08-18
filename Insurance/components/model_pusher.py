@@ -38,17 +38,21 @@ class ModelPusher:
             eval_report_path = self.model_eval_artifact.model_eval_report_path
             
             eval_data=read_yaml_file(eval_report_path)
+            
+            
+            
             # Model Path 
             model_uri=eval_data['Model_uri']
-
             logging.info(f" Model path : {model_uri}")
             file_path=os.path.join(self.saved_model_dir,'model.pkl')
             model = mlflow.sklearn.load_model(model_uri)
             logging.info(f"Selected model path {file_path}")
-            
             save_object(file_path=file_path, obj=model)
             logging.info("Model saved.")
-
+            
+            eval_data['Model_path']=file_path
+            
+            # Report 
             os.makedirs(self.saved_model_dir, exist_ok=True)
             logging.info(f"Report Location: {self.saved_model_dir}")
 

@@ -15,7 +15,7 @@ class Regressor:
     def __init__(self, X_train, X_test, y_train, y_test):
         self.models_dict = {
             "Random Forest Regression": RandomForestRegressor(),
-            "XGBoost Regression": xgb.XGBRegressor(),
+        #    "XGBoost Regression": xgb.XGBRegressor(),
             "Gradient Boosting Regression": GradientBoostingRegressor()
         }
         
@@ -105,7 +105,7 @@ class ModelTrainer :
             model_report ={
                 "Model_name": model_name,
                 "Parameters" : parameters,
-                "R2_score"  : R2_score
+                "metrics": {"R2_score"  : R2_score,}
             }
             
             ## Params file from Artifact 
@@ -116,6 +116,7 @@ class ModelTrainer :
                 "Run_name"   : run_name,
                 "Model_name": model_name,
                 "Parameters": parameters,
+       
             }
             
             # Write the dictionary to the YAML file
