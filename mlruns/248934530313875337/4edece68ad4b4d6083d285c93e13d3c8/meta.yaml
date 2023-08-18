@@ -1,0 +1,15 @@
+artifact_uri: file:///E:/Projects/Deployment/New%20INurance/Insurance_dvc/mlruns/248934530313875337/4edece68ad4b4d6083d285c93e13d3c8/artifacts
+end_time: 1692339378554
+entry_point_name: ''
+experiment_id: '248934530313875337'
+lifecycle_stage: active
+run_id: 4edece68ad4b4d6083d285c93e13d3c8
+run_name: run_name
+run_uuid: 4edece68ad4b4d6083d285c93e13d3c8
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1692339376528
+status: 3
+tags: []
+user_id: Hitesh

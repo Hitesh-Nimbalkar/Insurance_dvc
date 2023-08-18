@@ -31,71 +31,31 @@ class ModelPusher:
         except  Exception as e:
             raise InsuranceException(e, sys)
         
-    def load_credentials_from_env(self,variable,env_file_name=".env" ):
-        root_dir = os.getcwd()
-        env_file_path = os.path.join(root_dir, env_file_name)
-        load_dotenv(dotenv_path=env_file_path)
-       
-        return os.getenv(variable)     
-      
-            
+
     def initiate_model_pusher(self):
         try:
             # Selected model path
             eval_report_path = self.model_eval_artifact.model_eval_report_path
             
             eval_data=read_yaml_file(eval_report_path)
-            
-            # Model Report
-            model_name=eval_data['Model_name']
-            model_path=eval_data['Model_path']
-            R2_score=eval_data['R2_score']
-            report_path=eval_data['Report_path']
-            parameters=eval_data['Parameters']
-            
-            logging.info(f" Model path : {model_path}")
+            # Model Path 
+            model_uri=eval_data['Model_uri']
+
+            logging.info(f" Model path : {model_uri}")
             file_path=os.path.join(self.saved_model_dir,'model.pkl')
-            model = load_object(file_path=model_path)
+            model = mlflow.sklearn.load_model(model_uri)
             logging.info(f"Selected model path {file_path}")
             
             save_object(file_path=file_path, obj=model)
             logging.info("Model saved.")
-            
-            params_yaml_data=read_yaml_file('params.yaml')
-            experiment_name=params_yaml_data['Experiment']
-            run_name=params_yaml_data['run_name']
-            
-            tracking_uri=self.load_credentials_from_env(variable='MLFLOW_TRACKING_URI')
-            
-            logging.info(f" Traing Uri accessed : {tracking_uri}")
-            
-            # Set tracking uri for remote storage
-            mlflow.set_tracking_uri(tracking_uri)
-            # Create or get the experiment
-            mlflow.set_experiment(experiment_name)
-            
-            # Start a run
-            with mlflow.start_run(run_name=run_name):
-                # Log metrics, params, and model
-                mlflow.log_metric("R2_score", R2_score)
-                mlflow.log_params(parameters)
-                mlflow.log_artifact(model_path)
-                
-            
-            
-            # Create a dictionary for the report
-            report = {'Model_name': model_name, 'R2_score': R2_score,
-                      'Parameters': parameters,'Report_path': report_path}
 
-            logging.info(str(report))
-            
             os.makedirs(self.saved_model_dir, exist_ok=True)
             logging.info(f"Report Location: {self.saved_model_dir}")
 
             # Save the report as a YAML file
             file_path = os.path.join(self.saved_model_dir, 'report.yaml')
             with open(file_path, 'w') as file:
-                yaml.dump(report, file)
+                yaml.dump(eval_data, file)
 
             logging.info("Report saved as YAML file.")
             
