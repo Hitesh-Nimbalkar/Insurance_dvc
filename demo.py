@@ -3,7 +3,7 @@ from Insurance.config import *
 
 from Insurance.logger import logging
 from Insurance.pipeline.train import Pipeline
-from Insurance.pipeline.training_pipeline 
+
 
 def main():
     try:

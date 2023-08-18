@@ -1,4 +1,0 @@
-MLFLOW_TRACKING_URI=https://dagshub.com/Hitesh-Nimbalkar/Insurance_dvc.mlflow \
-MLFLOW_TRACKING_USERNAME=Hitesh-Nimbalkar \
-MLFLOW_TRACKING_PASSWORD=7a4ba5ccb75654cf747b7a5d512bdf6ddcd7ee33  \
-python script.py
