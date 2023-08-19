@@ -54,9 +54,13 @@ class instance_prediction_class:
             'region': [self.region]
             
         })
+        
+        print(user_input)
 
         # Preprocess the user input using the preprocessor
         preprocessed_array = preprocessor.transform(user_input)
+        
+        print(preprocessed_array)
         return preprocessed_array
 
     def prediction(self, preprocessed_input):

@@ -5,15 +5,10 @@ from typing import List
 from Insurance.utils import read_yaml_file
 from multiprocessing import Process
 from Insurance.entity.config_entity import *
-from Insurance.entity.artifact_entity import DataValidationArtifact,DataIngestionArtifact
+from Insurance.entity.artifact_entity import DataIngestionArtifact
 from Insurance.components.data_ingestion import DataIngestion
 from Insurance.components.data_validation import DataValidation
-from Insurance.components.data_transformation import DataTransformation
 
-from Insurance.components.model_trainer import ModelTrainer
-
-from Insurance.components.model_evaluation import ModelEvaluation
-from Insurance.components.model_pusher import ModelPusher
 
 import  sys
 from collections import namedtuple

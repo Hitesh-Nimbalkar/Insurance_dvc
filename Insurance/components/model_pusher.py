@@ -11,6 +11,7 @@ from Insurance.entity.artifact_entity import *
 from Insurance.utils import load_object,save_object,add_dict_to_yaml
 from Insurance.constant import *     
 from Insurance.constant import *       
+from Insurance.deployment.bento.save_bento import create_bento
 import mlflow
 from dotenv import load_dotenv
 
@@ -51,6 +52,16 @@ class ModelPusher:
             logging.info("Model saved.")
             
             eval_data['Model_path']=file_path
+            
+            print(eval_data)
+            
+            
+            # Creating bento for the saved Model
+            bento_create=create_bento(model_path= eval_data['Model_path'])
+            bento_model_tag=bento_create.load_model_and_save_it_to_bento()       
+            
+            logging.info(f" Bento created for the Saved model with tag : {bento_model_tag}")
+
             
             # Report 
             os.makedirs(self.saved_model_dir, exist_ok=True)
