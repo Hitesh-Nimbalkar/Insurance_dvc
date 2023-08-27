@@ -6,7 +6,6 @@ import pandas as pd
 import os
 from pydantic import BaseModel
 
-SAVED_MODEL_DIRECTORY=os.path.join(os.getcwd(),'Saved_model','model.pkl')
 class input(BaseModel):
     age: float=  20.0
     sex: str = "female"
